@@ -1,0 +1,373 @@
+swagger: '2.0'
+info:
+  description: |
+    This API lets users to manage their orders online.
+  version: 1.0.0
+  title: orders
+  contact:
+    email: krushilgoud@gmail.com
+    url: https://github.com/krushilgoud
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+# host: localhost
+# basePath: /api/v1/orders
+tags:
+- name: orders
+  description: Everything about managing orders online.
+# schemes:
+# - http
+paths:
+  /api/v1/orders:
+    post:
+      tags:
+      - Create orders
+      summary: Creates a new order
+      operationId: createAnOrder
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: userId
+        type: string
+        required: true
+        description: Represents the user id associated with the user to create a order againts the user
+      - in: header
+        name: Authorization
+        type: string
+        required: true
+        description: Represents the token for authorization to manage orders
+      - in: body
+        name: body
+        description: Order object that needs to be created
+        required: true
+        schema:
+          $ref: '#/definitions/orders'
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: '#/definitions/orders'
+        403:
+          description: Forbidden
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: User is not authorized to perform the operation - Not authenticated || Order already exists
+                example: Not authenticated
+        500:
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Generic server error
+                example: Internal server error
+    get:
+      tags:
+        - Retrieve orders
+      summary: A resource method to retrieve all the orders.
+      description: This resource method allows user to retrieve all the orders of the user provided the user id.
+      operationId: getorders
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: userId
+        type: string
+        required: true
+        description: Represents the user id associated with the user and the order
+      - in: header
+        name: Authorization
+        type: string
+        required: true
+        description: Represents the token for authorization to manage orders
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/orders'
+            description: represents the array of orders retrieved
+        403:
+          description: Forbidden
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: User is not authorized to perform the operation - Not authenticated
+                example: Not authenticated
+        500:
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Generic server error
+                example: Internal server error
+
+  /api/v1/orders/{orderId}:
+    put:
+      tags:
+      - Modify order
+      summary: Update order
+      description: This can only be done by the logged in user.
+      operationId: updateOrder
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - name: orderId
+        in: path
+        description: id of the order that need to be updated
+        required: true
+        type: string
+      - in: header
+        name: Authorization
+        type: string
+        required: true
+        description: Represents the token for authorization to manage orders
+      - in: body
+        name: body
+        description: Updated order object
+        required: true
+        schema:
+          $ref: '#/definitions/orders'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/orders'
+        403:
+          description: Forbidden
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: User is not authorized to perform the operation - Not authenticated
+                example: Not authenticated
+        500:
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Generic server error
+                example: Internal server error
+    delete:
+      tags:
+      - Delete orders
+      summary: Delete order(s)
+      description: This operaition can only be done by a logged in user.
+      operationId: deleteorders
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - name: orderId
+        in: path
+        description: id(s) of the order that need to be deleted. Can be a single id or comma separated if multipe
+        required: true
+        type: string
+      - in: header
+        name: Authorization
+        type: string
+        required: true
+        description: Represents the token for authorization to manage orders
+      responses:
+        200:
+          description: OK
+        403:
+          description: Forbidden
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: User is not authorized to perform the operation - Not authenticated
+                example: Not authenticated
+        500:
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Generic server error
+                example: Internal server error
+  /api/v1/orders/search/{title}:
+    get:
+      tags:
+      - Search orders
+      summary: This resource method id used to search the orders using title as key. Only logged in user can perform this action
+      description: This method is used to search orders using title
+      operationId: searchByTitle
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - in: header
+        name: Authorization
+        type: string
+        required: true
+        description: Represents the token for authorization to manage orders
+      - in: path
+        name: title
+        type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/orders'
+            
+        403:
+          description: Forbidden
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: User is not authorized to perform the operation - Not authenticated
+                example: Not authenticated
+        500:
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Generic server error
+                example: Internal server error
+  /api/v1/orders/manage/{orderIds}:
+    put:
+      tags:
+      - Update multiple orders
+      summary: 'This resource method is used to perform operations on multiple orders resources like - Grouping orders, Marking multiple orders as favourite and any other common update for the multiple resources need to be done'
+      description: This method is used to do any common update activity on multiple orders by passing comma separated id is orders
+      operationId: multiUpdate
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - in: header
+        name: Authorization
+        type: string
+        required: true
+        description: Represents the token for authorization to manage orders
+      - in: path
+        name: orderIds
+        type: string
+        description: Represents comma separated order ids of multiple orders.
+        required: true
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Update succesful
+                example: Update successful
+        403:
+          description: Forbidden
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: User is not authorized to perform the operation - Not authenticated
+                example: Not authenticated
+        500:
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Generic server error
+                example: Internal server error
+definitions:
+  orders:
+    type: object
+    properties:
+      id:
+        type: number
+        description: Represents the order id
+        example: 1
+      title:
+        type: string
+        description: Represents the title of the order
+        example: Hey do first in the morning
+      text:
+        type: string
+        description: Represents the text of the order
+        example: There is a lot to do. Please get ready soon and start to Cafe Coffee Day
+      createdOn:
+        type: string
+        format: date
+        example: 'Wed Oct 18 2017 12:41:34 GMT+0000'
+      modifiedOn:
+        type: string
+        format: date
+        description: Represents the order data modified date
+        example: 'Wed Oct 18 2017 12:41:34 GMT+0000'
+      state:
+        type: string
+        description: Represents the status of the order
+        default: not-started
+        example: in-progress
+      group:
+        type: string
+        description: Grouping the orders according to a name
+        example: urgent
+      favourite:
+        type: string
+        description: Represents the favourite orders
+        example: yes
+      userId:
+        type: string
+        description: Represents the Id of the user associated with the order
+        example: 100
+      accessType:
+        type: string
+        description: Represents the type of access the user have over the current order
+        default: full-access
+        example: read-only
+      sharedBy:
+        type: string
+        description: Represents the username of the user who have shared this order
+        default: self
+        example: krushilgoud@cognizant.com
+      reminder:
+        type: string
+        description: Represents the date time at which remonder is set to notify the user
+        format: date
+        example: 'Wed Oct 18 2017 12:41:34 GMT+0000'
+        
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /krushilgoud/orders/1.0.0
+schemes:
+ - https
+ - http

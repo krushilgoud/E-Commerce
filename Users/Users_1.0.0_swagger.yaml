@@ -1,0 +1,150 @@
+swagger: '2.0'
+info:
+  description: |
+    This API enables users to register and manage their account on orders system.
+  version: 1.0.0
+  title: Users
+  contact:
+    email: krushilgoud@gmail.com
+    url: https://github.com/krushilgoud
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+# host: locahost
+# basePath: /api/v1
+# schemes:
+# - http
+paths:
+  /api/v1/users/register:
+    post:
+      tags:
+      - Register
+      summary: User registers himself/herself for the online account.
+      operationId: register
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: User details that are required to register themselves.
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        201:
+          description: Created
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Success status of user registered
+                example: Successfully registered
+              username:
+                type: string
+                description: Email id used for registering
+                example: user@domain.com
+              userId:
+                type: string
+                description: Auto-generated unique id for the new user registered
+                example: 100
+        403:
+          description: Forbidden - User already registered
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Registration failure response
+                example: username is already exist
+        500:
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Registration failure response
+                example: Internal server error
+
+  /api/v1/users/login:
+    post:
+      tags:
+      - Login
+      summary: User logs in
+      operationId: login
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: User details that are used for the user to login
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Login success message
+                example: Successfuly logged in
+              username:
+                description: Email id used for logging in
+                type: string
+                example: online@domain.com
+              token:
+                type: string
+                description: Represents generated token for the logged in user to consume other services on the application.
+                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9ubGluZUBkb21haW4uY29tIiwidXNlcmlkIjoiMSIsIm1lc3NhZ2UiOiJTdWNjZXNzZnVsbHkgbG9nZ2VkIGluIn0.69EqUXkD4ojGngKfTEyoOdhtYw8TXPBnMOSVXlJC8p8
+              userId:
+                type: number
+                description: Represents the id generated for the user
+                example: 100
+        403:
+          description: Forbidden - User not subscribed
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: User not regeitered on the system
+                example: You are not registered user
+        500:
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Login attempt failure
+                example: Internal server error
+definitions:
+  User:
+    type: object
+    properties:
+      username:
+        type: string
+        description: Represents the email id of the user
+        example: 'online@domain.com'
+      password :
+        type: string
+        description: Password for registering or logging in
+        example: '*****************'
+
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /krushilgoud/Users/1.0.0
+schemes:
+ - https
+ - http

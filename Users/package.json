@@ -1,0 +1,43 @@
+{
+  "name": "users",
+  "version": "1.0.0",
+  "description": "This is a service enables user to manage their account",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/.bin/mocha ./server/test/**/*.js",
+    "lint": "node_modules/.bin/eslint './server/**/*.js' --ignore-path .eslintignore"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab-cts.stackroute.in/krushilgoud/ECommerce.git"
+  },
+  "keywords": [
+    "orders",
+    "login",
+    "register",
+    "node.js",
+    "express.js",
+    "mongoose",
+    "mongodb",
+    "microservices"
+  ],
+  "author": "krushilgoud",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.4",
+    "ip": "^1.1.5",
+    "jsonwebtoken": "^8.3.0",
+    "mongoose": "^5.0.10",
+    "mongoose-auto-increment": "^5.0.1"
+  },
+  "devDependencies": {
+    "chai": "^4.0.2",
+    "mocha": "^5.0.5",
+    "supertest": "^3.0.0",
+    "eslint": "^4.19.1"
+  }
+}
