@@ -31,7 +31,7 @@
     "express": "^4.16.4",
     "ip": "^1.1.5",
     "jsonwebtoken": "^8.3.0",
-    "mongoose": "^5.0.10",
+    "mongoose": "^5.7.5",
     "mongoose-auto-increment": "^5.0.1"
   },
   "devDependencies": {
