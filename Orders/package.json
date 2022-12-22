@@ -39,7 +39,7 @@
     "cors": "^2.8.4",
     "express": "^4.16.4",
     "ip": "^1.1.5",
-    "jsonwebtoken": "^8.3.0",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^5.3.6",
     "mongoose-auto-increment": "^5.0.1",
     "socket.io-client": "^2.1.1",
